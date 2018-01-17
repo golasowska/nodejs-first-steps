@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+</head>
+<body>
+  slajdy:
+  <textarea></textarea>
+  <br>
+  <button id='prev'>Prev</button>
+  <button id='next'>Next</button>
+  <!-- dodanie biblioteki socket.io -->
+  <script src='/socket.io/socket.io.js'></script>
+  <script src='http://code.jquery.com/jquery-2.2.4.min.js'></script>
+  <!-- utowrzenie polaczenia w czasie rzeczywistym dwukierounkowego-->
+  <script>
+    const socket = io();
+
+    // \n - rozdziela po enterze
+
+    let slideIndex = 0;
+
+    function selectSlide(dir) {
+      const slides = $('textarea').val().split('\n');
+      slideIndex = slideIndex +dir;
+      if (slideIndex >= slides.length) {
+        slideIndex = 0;
+      }
+      if (slideIndex < 0) {
+        slideIndex = slides.length -1;
+      }
+      const slide = slides[slideIndex].trim();
+      console.log('slide', slide);
+      socket.emit('selSlide', slide);
+    }
+
+    $('#next').on('click', () =>{
+      selectSlide(+1);
+    });
+
+    $('#prev').on('click', () =>{
+      selectSlide(-1);
+      });
+
+
+    // $('#next').on('click', () =>{
+    //   slideIndex ++;
+    //   if (slideIndex >= slides.length) {
+    //     slideIndex = 0;
+    //   }
+    //   const slide = slides[slideIndex].trim();
+    //   socket.emit('selSlide', slide);
+    // });
+    //
+    // $('#prev').on('click', () =>{
+    //   slideIndex --;
+    //   if (slideIndex <= 0) {
+    //     slideIndex = slides.length -1;
+    //   }
+    //   const slide = slides[slideIndex].trim();
+    //   socket.emit('selSlide', slide);
+    // });
+
+  </script>
+</body>
+</html>

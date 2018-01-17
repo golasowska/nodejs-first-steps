@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <style>
-    span{
+    span {
       height: 25px;
       display: inline-block;
       width: 1px;
     }
 
-    #yes{
+    #yes {
       background: #40e978;
     }
 
-    #no{
+    #no {
       background: #f75252;
     }
-
   </style>
 </head>
+
 <body>
   <div>
     TAK <span id="yes"></span> <small class="yes-count"></small>
@@ -40,11 +41,11 @@
   <script>
     const socket = io();
 
-// data to bedzie adres obrazu slajdu
+    // data to bedzie adres obrazu slajdu
     socket.on('votes', data => {
-      for(let ans of ['yes', 'no']){
+      for (let ans of ['yes', 'no']) {
         $('#' + ans).css('width', data[ans] * 25 + 'px');
-        $('.'+ans+'-count').text(data[ans]);  
+        $('.' + ans + '-count').text(data[ans]);
       }
 
       // $('#yes').css('width', data.yes * 25 + 'px');
@@ -53,13 +54,15 @@
       // $('.no-count').text(data.no);
     });
 
-    $('button').on('click', function () {
+    $('button').on('click', function() {
       const vote = $(this).data('vote');
-      console.log({vote});
+      console.log({
+        vote
+      });
       socket.emit('myVote', vote);
       $('button').prop('disabled', true);
     })
-
   </script>
 </body>
+
 </html>

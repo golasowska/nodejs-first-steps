@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{
+      padding: 0;
+      margin: o;
+      overflow: hidden;
+    }
+
+    textarea {
+      height: 100vh;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <textarea></textarea>
+
+  <!-- dodanie biblioteki socket.io -->
+  <script src='/socket.io/socket.io.js'></script>
+  <script src='http://code.jquery.com/jquery-2.2.4.min.js'></script>
+  <!-- utowrzenie polaczenia w czasie rzeczywistym dwukierounkowego-->
+  <script>
+    const socket = io();
+
+    socket.on('refreshText', data => {
+      $('textarea').val(data);
+    });
+
+    $('textarea').on('input', ()=>{
+      socket.emit('newText', $('textarea').val());
+    });
+  </script>
+</body>
+</html>

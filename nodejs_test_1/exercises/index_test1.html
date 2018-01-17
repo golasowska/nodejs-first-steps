@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Hello, World!</h1>
+  <button type="button" name="button">Click!</button>
+  <!-- dodanie biblioteki socket.io -->
+  <script src='/socket.io/socket.io.js'></script>
+  <script src='http://code.jquery.com/jquery-2.2.4.min.js'></script>
+  <!-- utowrzenie polaczenia w czasie rzeczywistym dwukierounkowego-->
+  <script>
+    const socket = io();
+
+// wysanie eventu do backendu
+    $('button').on('click', ()=>{
+      socket.emit('add');
+    });
+    // fron otrzymuje akcje z backendu i reaguje
+    socket.on('counter', data => {
+      $('h1').text(data);
+    })
+  </script>
+</body>
+</html>
