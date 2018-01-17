@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    span{
+      height: 25px;
+      display: inline-block;
+      width: 1px;
+    }
+
+    #yes{
+      background: #40e978;
+    }
+
+    #no{
+      background: #f75252;
+    }
+
+  </style>
+</head>
+<body>
+  <div>
+    TAK <span id="yes"></span> <small class="yes-count"></small>
+    <button data-vote='yes'>Głosuj na TAK</button>
+  </div>
+
+  <div>
+    NIE <span id="no"></span> <small class="no-count"></small>
+    <button data-vote='no'>Głosuj na NIE</button>
+  </div>
+
+  <!-- dodanie biblioteki socket.io -->
+  <script src='/socket.io/socket.io.js'></script>
+  <script src='http://code.jquery.com/jquery-2.2.4.min.js'></script>
+  <!-- utowrzenie polaczenia w czasie rzeczywistym dwukierounkowego-->
+  <script>
+    const socket = io();
+
+// data to bedzie adres obrazu slajdu
+    socket.on('votes', data => {
+      for(let ans of ['yes', 'no']){
+        $('#' + ans).css('width', data[ans] * 25 + 'px');
+        $('.'+ans+'-count').text(data[ans]);  
+      }
+
+      // $('#yes').css('width', data.yes * 25 + 'px');
+      // $('.yes-count').text(data.yes);
+      // $('#no').css('width', data.no * 25 + 'px');
+      // $('.no-count').text(data.no);
+    });
+
+    $('button').on('click', function () {
+      const vote = $(this).data('vote');
+      console.log({vote});
+      socket.emit('myVote', vote);
+      $('button').prop('disabled', true);
+    })
+
+  </script>
+</body>
+</html>
